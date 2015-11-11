@@ -2,7 +2,7 @@ defmodule DemoPipiline do
   @moduledoc false
 
   def demo() , do: (
-
+    # 在管道操作中 方法参数最好都用括号括起来
     # IO.puts (1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 40 ))
     (1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 40 )) |> IO.inspect
 
