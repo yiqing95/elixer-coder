@@ -1,6 +1,13 @@
 defmodule DemoPipiline do
   @moduledoc false
 
+  def demo() , do: (
+
+    # IO.puts (1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 40 ))
+    (1..10) |> Enum.map(&(&1*&1)) |> Enum.filter(&(&1 < 40 )) |> IO.inspect
+
+  )
+
   def f1(), do: (
      # 方法用的装饰器类似的效果 不然不易看出来调用情况
     "this p will be passed to f2" |> f2 |> f3
