@@ -91,5 +91,96 @@
     
 ## 模块属性
     
-    to be continue ...
+每个模块可以有关联的元数据，被称为模块的属性：  @attribute
+
+可以给属性赋值：  @attr_name  <attr_value>  
+
+属性定义只出现在最顶级，不能在函数级别这么做。但我们可以在函数中访问属性：
+
+~~~<elixir>
+
+    defmodule Example do
+        @author "yiqing"
+        
+        def get_author do
+            @author
+        end 
+    
+    end 
+
+    IO.puts "Example written by #{Example.get_author}"
+~~~
+
+属性可以多次定义 函数中可以访问他们：
+
+~~~[elixir]
+
+    @attr "one"
+    
+    def first , do: @attr
+    
+    @attr "two"
+    
+    def second , do: @attr
+
+    # -------------------------------------------------------------------------------------------
+    #输出
+    # 多次定义的属性输出
+    IO.puts " #{Example.first} #{Example.second} "
+    
+    # > 结果          one            two
+~~~
+这些属性不是一般意义上的变量，只用于配置或者元数据，Elixir程序员会使用他们 而这些属性出现的地方通常java或者ruby程序员会
+使用常量的
+
+## 模型名称： Elixir Erlang Atoms
+
+我们访问模块的方法：
+   
+> ModuleName.mod_func("param")
+
+实际在Elixir内部，模块名称只是atoms（原子）。
+但我们写一个以大写字母开头的名称时，比如IO Elixir内部会将其转换为原子：Elixir.IO
+
+>
+     iex> is_atom IO                          # true
+          to_string   IO                      # "Elixir.IO"
+          :"Elixir.IO"  === IO                # true
+          
+实际上调用一个模块的方法 语法可以是： :atom_name.func_name(params ...)             
+       
+~~~[elixir]
+       
+       IO.puts 123
+       # 等价下面的形式
+       :"Elixir.IO".puts 123   # 123
+       
+~~~       
+
+## 调用Erlang模块中的方法
+
+名称在Erlang中的惯例是不同的：
+
+- 变量以首字大写开始，
+- 原子是简单的小写
+
+使用timer模块的tc函数  
+
+>  :timer.tc # 注意开始的冒号
+
+调用Erlang模块的format函数
+
+> :io.format("The number is ~3+
+
+.1f~n " , [5.678])
+
+如果寻找能够为我们所用的库时，先找是否有可用的Elixir模块，内置的可以在官网看到，其他的列在 http:hex.pm 或者在githu上搜索
+**elixir**
+
+如果还没找到 那么可以使用Erlang的内置模块 但请注意，Erlang 有其自己的命名惯例 ： 变量以首字大写开始，标识符小写开始（原子）。
+其他不同处见于： [...](todo)
+
+
+
+
     
