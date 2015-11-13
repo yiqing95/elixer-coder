@@ -21,9 +21,11 @@ defmodule MyList do
   def  map([head | tail ] ,func) ,do: [ func.(head) | map(tail,func) ]
 
 
+  def sum(list) , do: _sum(list,0)  # def sum([head | tail ]) , do: _sum( [head | tail ] , 0 )
+  ## 私有函数
   ## 定义求和计算 调用时 需要传递一个将被求和的列表和一个初始总数（0）
-  def sum( [] , total ) , do: total
-  def sum( [ head | tail ] , total) , do: sum(tail , head + total )
+  defp _sum( [] , total ) , do: total
+  defp _sum( [ head | tail ] , total) , do: _sum(tail , head + total )
 
 
 end

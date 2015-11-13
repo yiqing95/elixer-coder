@@ -161,4 +161,40 @@
 但我们并没有地方来记录total！！ 我们的目标是有一个不可变的状态，所以我们不能把值保存在全局变量或者模块属性中。
   
 但是我们可以在函数参数中传递状态！
-  
+
+~~~[elixir]
+    
+      ## 定义求和计算 调用时 需要传递一个将被求和的列表和一个初始总数（0）
+      def sum( [] , total ) , do: total
+      def sum( [ head | tail ] , total) , do: sum(tail , head + total )
+
+~~~
+
+>
+       iex(22)> MyList.sum [] , 0
+       0
+       iex(23)> MyList.sum [1,3,5] , 0
+       9
+       iex(24)>
+
+不得不传递 0 有点不舒服，所以在Elixir中 是隐藏他们 ，在模块中定义一个公共函数 只接受一个列表，在内部调用私有函数来做真正
+的工作。
+
+~~~[elixir]
+    
+      def sum(list) , do: _sum(list,0)  # def sum([head | tail ]) , do: _sum( [head | tail ] , 0 )
+      ## 私有函数
+      ## 定义求和计算 调用时 需要传递一个将被求和的列表和一个初始总数（0）
+      defp _sum( [] , total ) , do: total
+      defp _sum( [ head | tail ] , total) , do: _sum(tail , head + total )
+
+~~~
+>
+    iex(25)> MyList.sum []
+    0
+    iex(26)> MyList.sum [4,5,6]
+    15
+
+私有函数跟公共函数是同名的 不过冠以下划线！这种惯例还是比较普遍采用的技巧。
+也有一些人采用 do_xxx  这种形式作为 帮助方法的命名惯例。  对应此处情形则是： do_sum ...
+      
