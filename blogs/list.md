@@ -64,5 +64,17 @@
 
 ~~~
     
-最诡异的是 第二个len定义 len([head | tail ] ) 匹配任何非空的列表    
+最诡异的是 第二个len定义 len([head | tail ] ) 匹配任何非空的列表
+    
+编译上面的文件会报一个警告：
+    >   my_list.ex:6: warning: variable head is unused
+    
+在上面的模块中并没有使用便利head，为了不再让编译器吵闹，所以可以用_  下划线 来忽略某些匹配。它扮演占位符的角色，也可以
+在变量名前面冠以下划线。 这种技术可以关闭因没有使用变量而产生的警告 
+
+~~~[elixir]
+
+       def len([_head | tail ]) , do: 1 + len(tail)
+
+~~~
     
