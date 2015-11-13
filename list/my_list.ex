@@ -14,4 +14,10 @@ defmodule MyList do
   # 对列表中的每个元素自身增1
   def add_1( [] ) , do: []
   def add_1([ head | tail ]) , do: [ head+1 | add_1(tail) ]
+
+
+  ##  著名的 Map 函数
+  def  map([], _func) , do: []
+  def  map([head | tail ] ,func) ,do: [ func.(head) | map(tail,func) ]
+
 end

@@ -77,4 +77,88 @@
        def len([_head | tail ]) , do: 1 + len(tail)
 
 ~~~
+
+## 使用head和Tail来构建列表
+
+~~~[elixir]
+
+      #  对某个整数的列表 返回一个新的列表 元素是原先响应位上的平方
+      def square([]) , do: []
+      #  递归
+      def square([head|tail]) , do: [ head * head | square( tail ) ]
     
+    
+      # 对列表中的每个元素自身增1
+      def add_1( [] ) , do: []
+      def add_1([ head | tail ]) , do: [ head+1 | add_1(tail) ]
+
+~~~
+运行如：
+>  
+     iex(7)> c "my_list.ex"
+     my_list.ex:1: warning: redefining module MyList
+     [MyList]
+     iex(8)> MyList.square []
+     []
+     iex(9)> MyList.square [2,3,5]
+     [4, 9, 25]
+     iex(10)> c "my_list.ex"
+     my_list.ex:1: warning: redefining module MyList
+     [MyList]
+     iex(11)> MyList.add_1 []
+     []
+     iex(12)> MyList.add_1 [3,5,6]
+    
+## 创建 Map 函数
+    
+上面的例子中 看到一种模式 ，所有的功能实际都是第二个函数定义承担的 ，操作发生在head 上 然后递归作用到 tail之上 并产生新
+的列表返回         **[  ( some_op_on( head ) )    |  recursive_call_self( tail )    ]**
+
+我们将定义一个 Map 方法，他接受一个list列表 和 一个函数 作为参数 ，并返回一个新的列表 列表中的每个元素会被函数所变换（即
+函数会作用于列表中的每一个元素之上）， 
+
+~~~[elixir]
+
+      ##  著名的 Map 函数
+      def  map([], _func) , do: [] # 下划线开始的参数 _func 防止编译器警告 （未使用的变量）
+      def  map([head | tail ] ,func) ,do: [ func.(head) | map(tail,func) ]
+
+~~~
+
+测试：
+>    
+    iex(14)> MyList.map []  , fn -> end # 注意空函数！ fn -> end 
+    []
+    iex(15)> MyList.map [3,4,5]  , fn el -> el+1  end
+    [4, 5, 6]
+    iex(16)> MyList.map [3,4,5]  , fn el -> el*el  end
+    [9, 16, 25]
+    iex(17)>
+    iex(17)> MyList.map [3,4,5]  , fn el -> el > 2  end
+    [true, true, true]
+    iex(18)>
+    
+函数之上内置的类型，定义于 fn 和 end之间 。 上例中使用了 func.(param) 来调用函数！  
+  
+### 使用& 的函数替代形式 
+>
+      iex(18)> MyList.map [3,4,5]  , &(&1 + 1 )
+      [4, 5, 6]
+      iex(19)> MyList.map [3,4,5]  , &(&1 * &1 )
+      [9, 16, 25]
+      iex(20)> MyList.map [3,4,5]  , &(&1 > 2 )
+      [true, true, true]
+  
+## 递归时 持续跟踪值
+  
+对列表中的元素求和 
+  
+不同对列表中每个原素都做变换的是此时 我们需要记忆 前面的求和结果
+递归结构
+  -  sum([]) -> 0
+  -  sum([head | tail]) ->  <<total>> + sum(tail)
+  
+但我们并没有地方来记录total！！ 我们的目标是有一个不可变的状态，所以我们不能把值保存在全局变量或者模块属性中。
+  
+但是我们可以在函数参数中传递状态！
+  
