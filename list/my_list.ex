@@ -20,4 +20,10 @@ defmodule MyList do
   def  map([], _func) , do: []
   def  map([head | tail ] ,func) ,do: [ func.(head) | map(tail,func) ]
 
+
+  ## 定义求和计算 调用时 需要传递一个将被求和的列表和一个初始总数（0）
+  def sum( [] , total ) , do: total
+  def sum( [ head | tail ] , total) , do: sum(tail , head + total )
+
+
 end
