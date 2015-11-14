@@ -194,6 +194,7 @@ struct 模块 视为受限的map形式
 这些方法都能进行 嵌套式访问 
 ### 嵌套访问器 与 非结构
 嵌套访问器 使用了Access 协议     来剥离或者组装数据结构 
+
 > iex> report = %{ owner: %{name: "yiqing" , company: "UZ"} , severity: 1 }
     put_in(report[:owner][:company] , "WiTo"  )
     pudate_in(report[:owner][:company] , &( "Mr. " <> &1  )   )
