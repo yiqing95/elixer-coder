@@ -252,4 +252,62 @@ collectable api 是很底层的 ，所有 一般典型的使用Enum.into 来访�
 x <- [1,2] , y <- [5,6]
 
 如果运行接下来的推导 回事  x=1 , y =5 ,x=1 , y= 6 ; x=2 ,y=5 ; 以及 x=2 , y=6 .
- 
+
+## comprehensions 也可用于bits
+
+位串 （）只不过是0或者1的集合，所以推导对其也适用并不惊奇 ，有点奇怪的是语法：
+>        iex(1)> for << ch <- "hello" >> , do: ch
+        'hello'
+         iex(3)> for << ch <- "hello" >> , do: << ch >>
+        ["h", "e", "l", "l", "o"]
+        
+用<< >> 围住的生成器 指示其实一个二进制 ，第一种情况 do 代码块返回的是每个字符的整数码 ，[104,101,...] iex会将之显示为
+        'hello'
+        
+第二种情形 将代码转换为字符串 
+        
+二进制模式匹配 ， 转换字符串 到其字符的八进制表示
+>  for << << b1::size(2) , b2::size(3) , b3::size(3) >> <- "hello" >> , do: "0#{b1}#{b2}#{b3}"
+
+## scoping and Comprehensions
+
+所有的位于推导内的变量赋值 都是局部的 ----- 变量的值不会影响到外部
+~~~[elixir]
+
+    ex(5)> name = "Dave"
+    "Dave"
+    iex(6)> for name <- ["cat","dog" ] , do: String.upcase(name)
+    ["CAT", "DOG"]
+    iex(7)> name
+    "Dave"
+
+~~~
+
+### comprehensions的返回值
+
+返回一个列表 ，其元素 由do 后面的表达式生成
+这种行为可以通过 into: 改变 ，
+>
+    iex(8)> for x <- ~W{ cat dog  } , into: %{} , do: {x,String.upcase(x)}
+    %{"cat" => "CAT", "dog" => "DOG"}
+    
+用Map.new 
+>      
+    iex(9)> for x <- ~W{ cat dog  } , into: Map.new , do: {x,String.upcase(x)}
+    %{"cat" => "CAT", "dog" => "DOG"}
+
+集合并不需要一定是空
+>
+        iex(10)> for x <- ~W{ cat dog  } , into: %{"ant" => "ANT"} , do: {x,String.upcase(x)}
+        %{"ant" => "ANT", "cat" => "CAT", "dog" => "DOG"}
+   
+into: 选项 携带的值实现了Collectable 协议 ，包括：lists ,binaries , functions ,maps ,files, hash dicts , hash sets ,以及
+   IO stream 所以可以写这样的东东：
+   
+>   
+         iex(11)> for x <- ~W{ cat dog } , into: IO.stream(:stdio, :line ) , do: "<<#{x}>>\n"
+         <<cat>>
+         <<dog>>
+         %IO.Stream{device: :standard_io, line_or_bytes: :line, raw: false}
+        
+     
