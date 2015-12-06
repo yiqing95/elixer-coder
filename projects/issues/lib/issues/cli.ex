@@ -61,6 +61,8 @@ defmodule  Issues.CLI do
        |> sort_into_ascending_order
        # 采用最先的count项
        |> Enum.take(count)
+       #  打印为表格
+       |> print_table_for_columns(["number", "created_at" , "title"])
 
       end
 
