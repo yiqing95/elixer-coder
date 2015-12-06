@@ -55,5 +55,36 @@ defmodule  Issues.CLI do
 
        Issues.GithubIssues.fetch(user , project)
 
+       |> decode_response
+       |> convert_to_list_of_hashdicts
+        # >> ++
+       |> sort_into_ascending_order
+       # 采用最先的count项
+       |> Enum.take(count)
+
+      end
+
+      def decode_response({:ok, body}) , do: body
+
+      def decode_response({:error,  error}) do
+        {_,message} =
+        List.keyfind(error , "message" , 0)
+        IO.puts "Error fetching from github: #{message}"
+
+        System.halt(2)
+      end
+
+      # 转换列表的列表 到哈希字典的列表
+      def
+      convert_to_list_of_hashdicts(list) do
+      list
+      |> Enum.map(&Enum.into(&1,HashDict.new))
+      end
+
+      # 排序
+      def sort_into_ascending_order(list_of_issues)
+      do:
+        Enum.sort list_of_issues , fn i1, i2 -> i1["created_at"] <= i2["created_at"] end
+
       end
 end
