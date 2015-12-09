@@ -114,3 +114,71 @@ spawn 函数可以分离出一个进程 ，其形式比较多，最简单的两�
 
 ~~~
 我们告诉receive方法 我们想超时 如果500毫秒还没响应的话 ，这里用到了称之为after的伪模式  。
+
+但如何使我们的greet 多次接受消息，我们的第一反应就是弄个循环 在每次迭代上使用receive函数 但Elixie 没有loop！
+然而我们有递归。
+~~~
+    
+    defmodule Spawn4 do
+      @moduledoc false
+    
+      def greet do
+    
+          receive do
+              {sender , msg} ->
+                send sender , {:ok , "Helllo , #{msg}"}
+              # 递归啦！
+              greet
+    
+          end
+      end
+    end
+    
+    # here is the client
+    
+    pid = spawn(Spawn4 , :greet , [])
+    
+    send pid , {self, "World!"}
+    
+    receive do
+          {:ok , msg} ->
+            IO.puts msg
+    end
+    
+    send pid , {self , "Yiqing"}
+    receive do
+      {:ok ,msg} ->
+        IO.puts msg
+       after 500 ->
+        IO.puts "The greeter has gone! "
+    end
+~~~
+
+## 递归 循环 栈
+上例中的greet 是递归调用的 或者会使您感到担忧 ， 每次它收到一条消息， 就以调用自己作为结束 。 在很多其他语言中这会为栈添加
+一个新的帧 。在很大数量的消息接受后 你就会堆栈溢出了 。
+
+在Elixir中不会发生这种事的 。因为有做 tail-call 优化 ，如果最后的调用是自己 那么就不会触发这次调用的 。替代的行为是
+runtime（运行时）简单地跳回到函数的首部。如果递归调用拥有参数 那么当递归循环时 原始参数会被替换的 
+请注意 递归调用必须是最后执行的 ，比如下面的就不是啦2
+~~~
+    
+    def factorail(0) , do: 1
+    def factorail(n) , do: n * factorail(n-1)
+    
+~~~
+尽管递归调用物理的出现在尾部 ，但并不是最后执行的 函数必须乘上返回的n
+
+为了做到尾部递归，我们需要把乘法移到递归里面去 这意味着需要添加一个聚合器accumulater
+~~~
+    
+    defmodule TailRecursive do
+    
+    
+        def factorial(n) , do: _fact(n ,1)
+    
+        defp _fact(0 , acc) , do: acc
+        defp _fact(n , acc ) , do: _fact(n-1 , acc * n)
+    
+    end
+~~~
