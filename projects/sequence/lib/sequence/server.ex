@@ -7,7 +7,7 @@ defmodule Sequence.Server do
     { :reply , current_number , current_number+1 }
   end
 
- def handle_call({:set_nuber , new_nuber} , _from , _current_number)  do
+ def handle_call({:set_nuber , new_number} , _from , _current_number)  do
         {:reply , new_number,new_number }
  end
 
@@ -16,7 +16,7 @@ defmodule Sequence.Server do
         {:reply , { :factors_of , number , factors(number) } , [] }
     end
 
-  def handle_cast({ :increment_number , delta } , current_nuber ) do
+  def handle_cast({ :increment_number , delta } , current_number ) do
     { :noreply , current_number + delta }
   end
 end
