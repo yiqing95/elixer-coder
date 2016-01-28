@@ -9,7 +9,7 @@ defmodule Evaluator.Mixfile do
      elixir: "~> 1.1",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps(Mix.env)]
   end
 
   # Configuration for the OTP application
@@ -17,6 +17,12 @@ defmodule Evaluator.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger]]
+  end
+
+  defp deps(:test) do
+    [{
+        :line_sigil,path: "../line_sigil"
+    }] ++ deps(:default)
   end
 
   # Dependencies can be Hex packages:
@@ -32,7 +38,7 @@ defmodule Evaluator.Mixfile do
   #   {:myapp, in_umbrella: true}
   #
   # Type "mix help deps" for more examples and options
-  defp deps do
+  defp deps(_) do
     []
   end
 end

@@ -148,3 +148,128 @@ evaluator接受字符串列表 包含Elixir表达式 并计算他们 ，他返�
 ### 连接子项目
 现在 我们需要测试我们的evaluator，使用我们的 ~l 魔术符来创建表达式列表很有意义，因此让我们以哪种方式来写我们的
 测试，下面是我们想要写的一些测试：
+~~~
+
+    defmodule EvaluatorTest do
+      use ExUnit.Case
+      import LineSigil
+      doctest Evaluator
+    
+      test "the truth" do
+        assert 1 + 1 == 2
+      end
+    
+      test "evaluates a basic expression " do
+        input = ~l"""
+          1 + 2
+        """
+        output = ~l"""
+        code> 1+2
+        value> 3
+        """
+        run_test input, output
+      end
+    
+      test "variables are propogated " do
+        input = ~l"""
+        a = 123
+        a + 1
+        """
+        output = ~l"""
+        code> a = 123
+        value> 123
+        code> a + 1
+        value> 124
+    
+        """
+        run_test input, output
+      end
+      defp run_test(lines, output) do
+        assert output == Evaluator.eval(lines)
+      end
+    end
+~~~
+但我们简单的运行它，Elixir会找不到LineSigil模块，为了补救这个我们需啊哟添加他到我们的项目依赖中,但我们只希望依赖出现在测试
+环境，所以我们的mix.exs 变得有点复杂了。
+~~~
+
+    defmodule Evaluator.Mixfile do
+      use Mix.Project
+    
+      def project do
+        [app: :evaluator,
+         version: "0.0.1",
+         deps_path: "../../deps",
+         lockfile: "../../mix.lock",
+         elixir: "~> 1.1",
+         build_embedded: Mix.env == :prod,
+         start_permanent: Mix.env == :prod,
+         deps: deps(Mix.env)]
+      end
+    
+      # Configuration for the OTP application
+      #
+      # Type "mix help compile.app" for more information
+      def application do
+        [applications: [:logger]]
+      end
+    
+      defp deps(:test) do
+        [{
+            :line_sigil,path: "../line_sigil"
+        }] ++ deps(:default)
+      end
+    
+      # Dependencies can be Hex packages:
+      #
+      #   {:mydep, "~> 0.3.0"}
+      #
+      # Or git/path repositories:
+      #
+      #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
+      #
+      # To depend on another app inside the umbrella:
+      #
+      #   {:myapp, in_umbrella: true}
+      #
+      # Type "mix help deps" for more examples and options
+      defp deps(_) do
+        []
+      end
+    end
+~~~
+跟常规配置不一样的是 deps 函数变为依赖环境返回不同的数组。
+之后从我们顶级目录运行测试命令。 
+>  
+    $ mix test
+    ==> line_sigil
+    Compiled lib/line_sigil.ex
+    Generated line_sigil app
+    ..
+    
+    Finished in 0.2 seconds (0.2s on load, 0.03s on tests)
+    2 tests, 0 failures
+    
+    Randomized with seed 176000
+    ==> evaluator
+    Compiled lib/evaluator.ex
+    Generated evaluator app
+    
+    
+      1) test evaluates a basic expression  (EvaluatorTest)
+         test/evaluator_test.exs:10
+         Assertion with == failed
+         code: output == Evaluator.eval(lines)
+         lhs:  ["code> 1+2", "value> 3"]
+         rhs:  ["code>   1 + 2", "value> 3"]
+         stacktrace:
+           test/evaluator_test.exs:18
+    
+    ..
+    
+    Finished in 0.00 seconds
+    3 tests, 1 failure
+    
+    Randomized with seed 392000
+
+看到我们的测试有1个失败呢，由于空格问题导致输入于预期不等(左手边lhs:  1+2 ... 右手边rhs 1 + 2 )， 手动调整下直到通过为止。
