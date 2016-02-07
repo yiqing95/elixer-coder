@@ -1,12 +1,12 @@
-¿ØÖÆÁ÷ --  Å¼¶û²ÅÐèÒªÊ¹ÓÃ·ÖÖ§
+æŽ§åˆ¶æµ --  å¶å°”æ‰éœ€è¦ä½¿ç”¨åˆ†æ”¯
 ==================
 
-¿ØÖÆÓï¾ä£¬Ò²³ÆÖ®Îª·ÖÖ§Óï¾ä
+æŽ§åˆ¶è¯­å¥ï¼Œä¹Ÿç§°ä¹‹ä¸ºåˆ†æ”¯è¯­å¥
 
 ### if and unless
 
-Elixir Í¬ÆäËûÓïÑÔÒ»Ñù£¬ÓÐ×Ô¼ºµÄif ºÍ else °æ±¾¡£Elixir Ò²ÓÐifµÄÂß¼­·´£º **unless**
-È»¶øÕâÐ©½á¹¹ÔÚElixirÖÐÊÇ·Ç³£¼òµ¥µÄ Ö»ÄÜ²âÊÔ µ¥¸öÌõ¼þ£»
+Elixir åŒå…¶ä»–è¯­è¨€ä¸€æ ·ï¼Œæœ‰è‡ªå·±çš„if å’Œ else ç‰ˆæœ¬ã€‚Elixir ä¹Ÿæœ‰ifçš„é€»è¾‘åï¼š **unless**
+ç„¶è€Œè¿™äº›ç»“æž„åœ¨Elixirä¸­æ˜¯éžå¸¸ç®€å•çš„ åªèƒ½æµ‹è¯• å•ä¸ªæ¡ä»¶ï¼›
 ~~~
 
     x = 42
@@ -24,8 +24,8 @@ Elixir Í¬ÆäËûÓïÑÔÒ»Ñù£¬ÓÐ×Ô¼ºµÄif ºÍ else °æ±¾¡£Elixir Ò²ÓÐifµÄÂß¼­·´£º **unless
     nil
     iex(5)>
     
-¼Ç×Å ÈÎºÎ¶«Î÷¶¼ÊÇ±í´ïÊ½£¬¼´Ê¹ÊÇ·ÖÖ§Óï¾ä¡£¼´£¬¼´Ê¹ÎÒÃÇ»ùÓÚÄ³Ð©Ìõ¼þ·Ö²æÁËÖ´ÐÐÂ·¾¶£¬·ÖÖ§µÄ×îºó±í´ïÊ½»á±»ÒþÊ½µØ·µ»Ø¡£
-±ÈÈç £¬Èç¹ûÎÒÃÇÁ´½ÓÁËÒ»ÏµÁÐµÄ±í´ïÊ½ÔÚÒ»Æð£¬×îºóÒ»¸ö±í´ïÊ½»á±»·µ»Ø¡£   
+è®°ç€ ä»»ä½•ä¸œè¥¿éƒ½æ˜¯è¡¨è¾¾å¼ï¼Œå³ä½¿æ˜¯åˆ†æ”¯è¯­å¥ã€‚å³ï¼Œå³ä½¿æˆ‘ä»¬åŸºäºŽæŸäº›æ¡ä»¶åˆ†å‰äº†æ‰§è¡Œè·¯å¾„ï¼Œåˆ†æ”¯çš„æœ€åŽè¡¨è¾¾å¼ä¼šè¢«éšå¼åœ°è¿”å›žã€‚
+æ¯”å¦‚ ï¼Œå¦‚æžœæˆ‘ä»¬é“¾æŽ¥äº†ä¸€ç³»åˆ—çš„è¡¨è¾¾å¼åœ¨ä¸€èµ·ï¼Œæœ€åŽä¸€ä¸ªè¡¨è¾¾å¼ä¼šè¢«è¿”å›žã€‚   
 >
     iex(5)> if true do
     ...(5)> x = 42
@@ -35,7 +35,7 @@ Elixir Í¬ÆäËûÓïÑÔÒ»Ñù£¬ÓÐ×Ô¼ºµÄif ºÍ else °æ±¾¡£Elixir Ò²ÓÐifµÄÂß¼­·´£º **unless
     ...(5)> end
     50
     
-¼´Ê¹Ê¹ÓÃelse ±í´ïÊ½Ò²·µ»Ø·Ö²æÂ·¾¶µÄ×îºóÖµ
+å³ä½¿ä½¿ç”¨else è¡¨è¾¾å¼ä¹Ÿè¿”å›žåˆ†å‰è·¯å¾„çš„æœ€åŽå€¼
 >
     iex(6)> if false do
     ...(6)> "nope"
@@ -44,34 +44,34 @@ Elixir Í¬ÆäËûÓïÑÔÒ»Ñù£¬ÓÐ×Ô¼ºµÄif ºÍ else °æ±¾¡£Elixir Ò²ÓÐifµÄÂß¼­·´£º **unless
     ...(6)> end
     "I will be returned"
     
-ÒòÎª±í´ïÊ½±ØÐë·µ»ØÖµ£¬ÎÒÃÇÉõÖÁ¿ÉÒÔÊ¹ÓÃÄ£Ê½Æ¥ÅäÔÚ·µ»ØµÄ±í´ïÊ½ÉÏ£º
+å› ä¸ºè¡¨è¾¾å¼å¿…é¡»è¿”å›žå€¼ï¼Œæˆ‘ä»¬ç”šè‡³å¯ä»¥ä½¿ç”¨æ¨¡å¼åŒ¹é…åœ¨è¿”å›žçš„è¡¨è¾¾å¼ä¸Šï¼š
 >
     iex(7)> 42 = if true do
     ...(7)> 42
     ...(7)> end
     42
 
-**unless** ºÜÏñif £¬Êµ¼ÊÉÏ£¬±»ÊµÏÖÎªifµÄ·´×ª
+**unless** å¾ˆåƒif ï¼Œå®žé™…ä¸Šï¼Œè¢«å®žçŽ°ä¸ºifçš„åè½¬
 >
     iex(8)> nil = unless true do 42 end
     nil
     iex(9)> 42 = unless false do 42 end
     42
 
-´ËÍâ£¬ºÍifÀàËÆ£¬unless Ò²ÓÐelse ¿é
+æ­¤å¤–ï¼Œå’Œifç±»ä¼¼ï¼Œunless ä¹Ÿæœ‰else å—
 >
     iex(10)> "true" = unless true do 42 else "true" end
     "true"
     iex(11)>
 
-Êµ¼Ê£¬Ê¹ÓÃunless µÈ¼ÛÓÚ if not condition ...:
+å®žé™…ï¼Œä½¿ç”¨unless ç­‰ä»·äºŽ if not condition ...:
 >
     iex(12)> "false" = if not false do "false" else "true" end
     "false"
     
 ## the new else if
-ÒòÎªÎÒÃÇ²»ÄÜÁ´Ê½Ê¹ÓÃ£º if else if ±í´ïÊ½¡£
-cond £º
+å› ä¸ºæˆ‘ä»¬ä¸èƒ½é“¾å¼ä½¿ç”¨ï¼š if else if è¡¨è¾¾å¼ã€‚
+cond ï¼š
 ~~~
     
     x = 42
@@ -93,10 +93,10 @@ cond £º
     42
     "Math seems to work."
 ~~~
-Õâ¿´ÆðÀ´ºÜÏñ »ùÓÚC ÓïÑÔµÄ switch Óï¾ä¡£
-È»ºó£¬Ã»ÓÐÍ¬switchÓï¾äÖÐµÄ¡°fall through¡±ÐÐÎª 
+è¿™çœ‹èµ·æ¥å¾ˆåƒ åŸºäºŽC è¯­è¨€çš„ switch è¯­å¥ã€‚
+ç„¶åŽï¼Œæ²¡æœ‰åŒswitchè¯­å¥ä¸­çš„â€œfall throughâ€è¡Œä¸º 
 
-Ë³ÐòÎÊÌâ£º
+é¡ºåºé—®é¢˜ï¼š
 >
     cond do
     true -> "Always"
@@ -118,16 +118,16 @@ cond £º
     true -> "Else"
     end
 
-Í¨¹ý -> °Ñ±í´ïÊ½¹é×é¡£ÎÒÃÇ¿ÉÒÔÊ¹ÓÃÈÎÒâ¶àµÄ±í´ïÊ½Ö»ÒªÊÊÓÚÔÄ¶Á¡£ ×¢ÒâÉÏÃæµÄ Ä©Î²µÄtrue £¡    
+é€šè¿‡ -> æŠŠè¡¨è¾¾å¼å½’ç»„ã€‚æˆ‘ä»¬å¯ä»¥ä½¿ç”¨ä»»æ„å¤šçš„è¡¨è¾¾å¼åªè¦é€‚äºŽé˜…è¯»ã€‚ æ³¨æ„ä¸Šé¢çš„ æœ«å°¾çš„true ï¼    
 >
     iex(2)> cond do
     ...(2)> false  -> "This is never returned"
     ...(2)> end
     ** (CondClauseError) no cond clause evaluated to a true value
 
-Òò´Ë¹²Í¬Êµ¼ù¾ÍÊÇÌí¼Ótrue ×÷Îª else ±í´ïÊ½¡£
+å› æ­¤å…±åŒå®žè·µå°±æ˜¯æ·»åŠ true ä½œä¸º else è¡¨è¾¾å¼ã€‚
 
-¸üÉî²ã´Î ÒòÎªÈÎºÎÊÂÇé¶¼ÊÇÒ»¸ö±í´ïÊ½£¬ÎÒÃÇ¿ÉÒÔ°ó¶¨ condµÄ½á¹û±í´ïÊ½¸øÒ»¸öÃû×Ö£º
+æ›´æ·±å±‚æ¬¡ å› ä¸ºä»»ä½•äº‹æƒ…éƒ½æ˜¯ä¸€ä¸ªè¡¨è¾¾å¼ï¼Œæˆ‘ä»¬å¯ä»¥ç»‘å®š condçš„ç»“æžœè¡¨è¾¾å¼ç»™ä¸€ä¸ªåå­—ï¼š
 >
     iex(2)> result = cond do
     ...(2)> 2 + 2 == 5 -> "For large values of 2"
@@ -139,13 +139,13 @@ cond £º
     Because math works
     :ok
     
-Ò»Ñù £¬ÎÒÃÇÒ²¿ÉÒÔÔÚcond½á¹ûÉÏÊ¹ÓÃÄ£Ê½Æ¥Åä 
+ä¸€æ · ï¼Œæˆ‘ä»¬ä¹Ÿå¯ä»¥åœ¨condç»“æžœä¸Šä½¿ç”¨æ¨¡å¼åŒ¹é… 
     
-## Elixir case ±í´ïÊ½
+## Elixir case è¡¨è¾¾å¼
 
-case Í¨ cond ±í´ïÊ½ºÜÏñ ³ýÁËÆäÐÐÎª¸üÏñÄ£Ê½Æ¥Åä ¡£
+case é€š cond è¡¨è¾¾å¼å¾ˆåƒ é™¤äº†å…¶è¡Œä¸ºæ›´åƒæ¨¡å¼åŒ¹é… ã€‚
 
-ÎÒÃÇÊ¹ÓÃcase ¸ü¼Ó±¾µØ»¯µØ ²âÊÔ²»Í¬´úÂë¿éµÄ·ÖÖ§ »ùÓÚµ¥¶ÀµÄÒ»¸öÖµ £¬´Ëµã Æä¸üÏñ C »òÕß JavaµÄ switchÓï¾ä¡£
+æˆ‘ä»¬ä½¿ç”¨case æ›´åŠ æœ¬åœ°åŒ–åœ° æµ‹è¯•ä¸åŒä»£ç å—çš„åˆ†æ”¯ åŸºäºŽå•ç‹¬çš„ä¸€ä¸ªå€¼ ï¼Œæ­¤ç‚¹ å…¶æ›´åƒ C æˆ–è€… Javaçš„ switchè¯­å¥ã€‚
 >
     iex(4)> mylist = [1, 2, 3, 4]
     [1, 2, 3, 4]
@@ -158,10 +158,10 @@ case Í¨ cond ±í´ïÊ½ºÜÏñ ³ýÁËÆäÐÐÎª¸üÏñÄ£Ê½Æ¥Åä ¡£
     iex: warning: code block starting at line contains unused literal "Second element is 2" (remove the literal or assign it to _ to avoid warnings)
     11
 
-case ¸ü½Ó½üÓÚÄ£Ê½Æ¥Åä £¬ÎÒÃÇÊ¹ÓÃ¸ü¶àµÄÓï·¨ºÍÓïÒåÀ´×ÔÄ£Ê½Æ¥Åä¶ø²»ÊÇÌõ¼þÊ½ £¬
-ÎÒÃÇÊ¹ÓÃ _ ÏÂ»®Ïß ÓÃÓÚÊ§ÅäÇé¿ö ¡£ Õâ¸øÎÒÃÇÁËÔÚcaseÓï¾äÖÐ Ïñ else ×Ö¾äµÄÐÐÎª ¡£
+case æ›´æŽ¥è¿‘äºŽæ¨¡å¼åŒ¹é… ï¼Œæˆ‘ä»¬ä½¿ç”¨æ›´å¤šçš„è¯­æ³•å’Œè¯­ä¹‰æ¥è‡ªæ¨¡å¼åŒ¹é…è€Œä¸æ˜¯æ¡ä»¶å¼ ï¼Œ
+æˆ‘ä»¬ä½¿ç”¨ _ ä¸‹åˆ’çº¿ ç”¨äºŽå¤±é…æƒ…å†µ ã€‚ è¿™ç»™æˆ‘ä»¬äº†åœ¨caseè¯­å¥ä¸­ åƒ else å­—å¥çš„è¡Œä¸º ã€‚
 
-ÁíÒ»¸öcaseÀý×Ó£º
+å¦ä¸€ä¸ªcaseä¾‹å­ï¼š
 >
     iex(6)> x = 1
     1
@@ -170,7 +170,7 @@ case ¸ü½Ó½üÓÚÄ£Ê½Æ¥Åä £¬ÎÒÃÇÊ¹ÓÃ¸ü¶àµÄÓï·¨ºÍÓïÒåÀ´×ÔÄ£Ê½Æ¥Åä¶ø²»ÊÇÌõ¼þÊ½ £¬
     ...(7)> end
     ** (CaseClauseError) no case clause matching: 10
 
-## Ê¹ÓÃbranch µÄÀý×Ó
+## ä½¿ç”¨branch çš„ä¾‹å­
 ~~~
 
     defmodule FizzBuzz do
@@ -188,8 +188,8 @@ case ¸ü½Ó½üÓÚÄ£Ê½Æ¥Åä £¬ÎÒÃÇÊ¹ÓÃ¸ü¶àµÄÓï·¨ºÍÓïÒåÀ´×ÔÄ£Ê½Æ¥Åä¶ø²»ÊÇÌõ¼þÊ½ £¬
       end
     end
 ~~~
-ÎªÊ²Ã´Ã»ÓÐÓÃEnum.map/2  Enum.map/2ºÍEnum.each/2µÄ¹Ø¼üÇø±ðÊÇÆäÄ¿µÄºÍ½á¹û¡£
-Enum.map/2 ·µ»ØÁ÷ÖÐµÄµÄÃ¿¸öÔªËØ½á¹û¡£¶øEnum.each/2 Ö»·µ»Ø:ok ¼´½á¹û±»¶ªÆúÁË ÕâºÜÊÊºÏ´òÓ¡Ã¿¸öÔªËØ
+ä¸ºä»€ä¹ˆæ²¡æœ‰ç”¨Enum.map/2  Enum.map/2å’ŒEnum.each/2çš„å…³é”®åŒºåˆ«æ˜¯å…¶ç›®çš„å’Œç»“æžœã€‚
+Enum.map/2 è¿”å›žæµä¸­çš„çš„æ¯ä¸ªå…ƒç´ ç»“æžœã€‚è€ŒEnum.each/2 åªè¿”å›ž:ok å³ç»“æžœè¢«ä¸¢å¼ƒäº† è¿™å¾ˆé€‚åˆæ‰“å°æ¯ä¸ªå…ƒç´ 
 ~~~
         
     iex(7)> import_file "fizz_buzz.ex"
@@ -300,6 +300,126 @@ Enum.map/2 ·µ»ØÁ÷ÖÐµÄµÄÃ¿¸öÔªËØ½á¹û¡£¶øEnum.each/2 Ö»·µ»Ø:ok ¼´½á¹û±»¶ªÆúÁË ÕâºÜ
     :ok
 ~~~
 
-## Mergesort ºÏ²¢ÅÅÐò
+## Mergesort åˆå¹¶æŽ’åº
 
-¿ìËÙÅÅÐò×î²îÇé¿öÊÇ O(n2) ¶ø ºÏ²¢ÅÅÐò×î²îÇé¿öÊÇ O(n log(n)).
+å¿«é€ŸæŽ’åºæœ€å·®æƒ…å†µæ˜¯ O(n2) è€Œ åˆå¹¶æŽ’åºæœ€å·®æƒ…å†µæ˜¯ O(n log(n)).
+
+å…ˆåˆ›å»ºé¡¹ç›®
+>
+    
+    F:\Elixir-workspace\elixer-coder\learning-elixir\5\codes>mix new mergesort
+    * creating README.md
+    * creating .gitignore
+    * creating mix.exs
+    * creating config
+    * creating config/config.exs
+    * creating lib
+    * creating lib/mergesort.ex
+    * creating test
+    * creating test/test_helper.exs
+    * creating test/mergesort_test.exs
+    
+    Your Mix project was created successfully.
+    You can use "mix" to compile it, test it, and more:
+    
+        cd mergesort
+        mix test
+    
+    Run "mix help" for more commands.
+    
+## å†™æµ‹è¯•
+
+æµ‹è¯•é©±åŠ¨é£Žæ ¼ä¸­ï¼Œæˆ‘ä»¬éœ€è¦å…ˆåˆ›å»ºæˆ‘ä»¬çš„æµ‹è¯•ï¼Œå¦‚æžœæ„¿æ„ä¹Ÿå¯ä»¥æœ€åŽå†™æµ‹è¯•ã€‚
+~~~
+
+       test "test returns [] when empty " do
+           assert [] == Mergesort.sort([])
+         end
+   
+     test "test return sorted list when given reserverd list " do
+       assert [1,2,3,4] == Mergesort.sort([4,3,2,1])
+     end
+   
+     test "merge returns [] when given empty lists " do
+       assert [] == Mergesort.merge([], [])
+     end
+   
+     test "merge returns side when other is empty " do
+       l = [1,2,4,5]
+       ^l = Mergesort.merge(l,[])
+       ^l = Mergesort.merge([], l)
+     end
+   
+     test "merge returns merged list" do
+       left = [1,3,5,7]
+       right = [2,4,6,8]
+       assert [1,2,3,4,5,6,7,8] == Mergesort.merge(left, right)
+     end
+~~~
+
+## implement the sort å®žçŽ°æŽ’åº
+
+sort/1 å‡½æ•°è‡ªå·±å¾ˆå®¹æ˜“ï¼Œç®€å•åœ°æ˜¯ä¸€ä¸ªé€’å½’å‡½æ•° è¿”å›žæ¯ä¸ªåˆ†ç‰‡çš„åˆå¹¶ç»“æžœã€‚
+
+æ‰“å¼€ lib/mergesort.ex æ–‡ä»¶
+~~~
+
+    defmodule Mergesort do
+    
+        def sort(l) do
+           cond do
+                l == [] -> []
+                length(1) <= 1 -> 1
+                true ->
+                    middle = div(length(l), 2)
+                    left = Enum.slice(1, 0, middle)
+                    right = Enum.slice(l, middle, length(l) - length(left))
+                    left = sort(left)
+                    right = sort(right)
+                    merge(left, right)
+            end
+        end
+    end
+~~~
+å¦‚æžœåˆ—è¡¨æ—¶ç©ºçš„ ï¼Œè¿”å›žç©ºåˆ—è¡¨ï¼Œå¦‚æžœåˆ—è¡¨æœ‰ä¸€ä¸ªæˆ–è€…é›¶ä¸ªå…ƒç´ ï¼Œè¿”å›žç»™å®šåˆ—è¡¨ã€‚
+æœ€åŽå¦‚æžœåˆ—è¡¨æœ‰ä¸€ä¸ªæˆ–è€…å¤šäºŽä¸€ä¸ªå…ƒç´  ï¼Œæœ€åŽä¸€ç§æƒ…å†µï¼Œæˆ‘ä»¬æ‰¾åˆ°åˆ—è¡¨çš„ä¸­éƒ¨ï¼Œåˆ†å‰²åˆ—è¡¨ä¸ºå·¦å³ä¸¤ä¸ª ï¼Œé€’å½’åœ°mergesortæ¯ä¸ªéƒ¨åˆ† ï¼Œ
+æœ€ç»ˆåˆå¹¶ç»“æžœã€‚
+
+æŽ¥ä¸‹æ¥å®žçŽ°merge/2 å‡½æ•°ï¼š
+~~~
+
+    def merge(left, right) do
+            cond do
+                left == []   -> right
+                right == []  -> left
+                hd(left) <= hd(right)  -> [hd(left)] ++ merge(tl(left) , right)
+                true -> [hd(right)] ++ merge(left, tl(right))
+            end
+        end
+~~~
+
+è¿™é‡Œå®šä¹‰äº†ä¸‰ä¸ªæ¨¡å¼ï¼Œç¬¬ä¸€ä¸ªç”¨äºŽç¬¬ä¸€ä¸ªåˆ—è¡¨æ˜¯ç©ºçš„ ï¼Œç¬¬äºŒä¸ªç”¨äºŽç¬¬äºŒä¸ªåˆ—è¡¨æ˜¯ç©ºçš„ï¼Œæœ€åŽ æœ€åŽä¸€ä¸ªæ¨¡å¼å®žé™…åšçš„mergingåˆå¹¶ã€‚
+
+å¯¹äºŽæœ€åŽä¸€ä¸ªæ¨¡å¼ï¼Œæˆ‘ä»¬åˆ†ç¦»å‡ºæ¥é¢æ¯ä¸ªåˆ—è¡¨çš„é¦–éƒ¨å’Œå°¾éƒ¨ç”¨äºŽæ¯”è¾ƒã€‚åœ¨mergeå‡½æ•°ä½“å†…ï¼Œæµ‹è¯•æ˜¯å¦ç¬¬ä¸€ä¸ªåˆ—è¡¨çš„é¦–éƒ¨å°äºŽæˆ–è€…ç­‰äºŽç¬¬äºŒä¸ª
+åˆ—è¡¨çš„é¦–éƒ¨å€¼ ï¼Œå¦‚æžœæ˜¯ï¼Œæˆ‘ä»¬å°±åˆ›å»ºä¸€ä¸ªæ–°çš„åˆ—è¡¨ æŠŠç¬¬ä¸€ä¸ªåˆ—è¡¨çš„é¦–éƒ¨æ”¾åœ¨é¦–ä½ ï¼Œå¹¶ åœ¨ç¬¬ä¸€ä¸ªåˆ—è¡¨çš„å°¾éƒ¨å’Œç¬¬äºŒä¸ªåˆ—è¡¨ ä¸Šé€’å½’è°ƒç”¨åˆå¹¶ã€‚
+å¹¶ä¸”å¦‚æžœç¬¬äºŒä¸ªåˆ—è¡¨çš„é¦–éƒ¨æ›´å°ï¼Œæˆ‘ä»¬åˆ›å»ºä¸€ä¸ªæ–°åˆ—è¡¨ ä½¿ç”¨ç¬¬äºŒä¸ªåˆ—è¡¨çš„é¦–éƒ¨ï¼Œåšç›¸åŒçš„äº‹æƒ… ï¼ˆç®—æ³• è´¨ä¸Šæ˜¯å¯¹ç§°çš„ï¼‰
+è‡³æ­¤è¿è¡Œæµ‹è¯•
+~~~
+    
+    F:\Elixir-workspace\elixer-coder\learning-elixir\5\codes\mergesort>mix test
+    
+    
+      1) test test return sorted list when given reserverd list  (MergesortTest)
+         test/mergesort_test.exs:13
+         ** (ArgumentError) argument error
+         stacktrace:
+           (mergesort) lib/mergesort.ex:6: Mergesort.sort/1
+           test/mergesort_test.exs:14
+    
+    .....
+    
+    Finished in 0.2 seconds (0.2s on load, 0.04s on tests)
+    6 tests, 1 failure
+    
+    Randomized with seed 773000
+~~~
