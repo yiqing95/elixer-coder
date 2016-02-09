@@ -1,3 +1,5 @@
+# doctest(Flatten) # 使用注释来测试！ 出现doctest未定义！！！ 兼容问题
+
 defmodule FlattenTest do
   use ExUnit.Case
   doctest Flatten

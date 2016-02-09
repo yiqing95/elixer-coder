@@ -366,19 +366,19 @@ sort/1 函数自己很容易，简单地是一个递归函数 返回每个分片
 
     defmodule Mergesort do
     
-        def sort(l) do
-           cond do
-                l == [] -> []
-                length(1) <= 1 -> 1
-                true ->
-                    middle = div(length(l), 2)
-                    left = Enum.slice(1, 0, middle)
-                    right = Enum.slice(l, middle, length(l) - length(left))
-                    left = sort(left)
-                    right = sort(right)
-                    merge(left, right)
-            end
-        end
+         def sort(l) do
+               cond do
+                    l == [] -> []
+                    length(l) <= 1  -> l
+                    true ->
+                        middle = div(length(l), 2)
+                        left = Enum.slice(l, 0, middle)
+                        right = Enum.slice(l, middle, length(l) - length(left))
+                        left = sort(left)
+                        right = sort(right)
+                        merge(left, right)
+                end
+          end
     end
 ~~~
 如果列表时空的 ，返回空列表，如果列表有一个或者零个元素，返回给定列表。
@@ -423,3 +423,254 @@ sort/1 函数自己很容易，简单地是一个递归函数 返回每个分片
     
     Randomized with seed 773000
 ~~~
+看到有错误 最后发现源码中 **l** 和 **1** 拼写错误导致！
+改正后重跑测试:
+~~~
+
+    F:\Elixir-workspace\elixer-coder\learning-elixir\5\codes\mergesort>mix test
+    Compiled lib/mergesort.ex
+    Generated mergesort app
+    ......
+    
+    Finished in 0.06 seconds (0.06s on load, 0.00s on tests)
+    6 tests, 0 failures
+    
+    Randomized with seed 104000
+
+~~~
+
+加载iex 来自定义测试数据
+>
+    F:\Elixir-workspace\elixer-coder\learning-elixir\5\codes\mergesort>iex -S mix
+    Eshell V7.0  (abort with ^G)
+    Compiled lib/mergesort.ex
+    Generated mergesort app
+    Interactive Elixir (1.1.1) - press Ctrl+C to exit (type h() ENTER for help)
+    iex(1)> list = Stream.repeatedly( fn() -> :random.uniform(20) end) |>
+    ...(1)> Enum.take(10)
+    [9, 15, 19, 11, 7, 12, 19, 14, 10, 12]
+    iex(2)> Mergesort.sort(list)
+    [7, 9, 10, 11, 12, 12, 14, 15, 19, 19]
+    iex(3)>
+
+
+我们使用Stream.repeatedly/1 流 到Enum.take/2 来创建一个随机数列表。Stream.repeatedly/1 期望一个无参函数 所以用匿名函数来
+包裹:random.uniform/1 函数。【:random.uniform/1 函数 是一个Erlang函数 可用来生成一个随机数在区间(0,N] 间 起于0 不包括N 】
+
+可用多测试几个 用不同的数据 。确保sort函数正确运行。
+
+## Exception handling 异常处理
+
+你可能熟悉其他语言中的异常处理，当你在Elixir中你可能用以前的思维来想异常，但是 在Elixie这样的函数式编程中，我们不要忘却
+过去所学。
+
+Elixir 提供了基本的设施用来触发和捕获异常。
+
+首先最红要的是 ： 异常在Elixir中  **不是** 控制流或者分支语句！
+异常是严格意义上的异常行为，即 绝对不应该发生的事情发生了 ，一些异常的例子包括 数据库服务器宕机，名称服务失败，或者打开确定
+位置的配置文件（不存在?） 然而 无法打开用户给定名称的文件不是一个异常（这种问题完全可以通过我们程序员避免发生）
+
+系统 编程的假设 过早失败 还是经常失败（fail early 还是 fail often）
+
+## Raising Exceptions 触发异常
+
+在Elixir中触发异常 我们使用raise/1 和 raise/2 函数。
+第一种 简单的指定一个异常字符串
+>
+    iex(3)> raise "Failing"
+    ** (RuntimeError) Failing
+
+第二种形式允许我们随异常消息一起指定异常类型
+>
+    iex(3)> raise RuntimeError , "Failing"
+    ** (RuntimeError) Failing
+
+raise 的第二个函数更有用 可以看看raise的文档以获取更多信息( 注意函数签名 跟常规的设计不一样 ， 在oo 程序中 如果类型是可
+选参数 可能会作为第二个参数出现（即raise message XxxError ） 但Elixir中的模式匹配 好像不用管这种惯用法)
+
+## Error , exit 和 throw
+
+在Elixir中我们可以激发一个第二个error类型 使用error ，exit 和 throw。这些都可以被抓获和处理使用try-catch块。
+
+
+### 处理异常
+try-rescue 结构同其他语言中的try-catch块类似 但区别是try-rescue可以用来拯救发生的错误
+
+try-rescue 块行为很像try-catch块，比如除零问题，我们可以局部处理它 而不是让他向上传递出去。
+>
+    iex(3)> try do
+    ...(3)> 1 / 0
+    ...(3)> rescue
+    ...(3)> e in ArithmeticError -> e
+    ...(3)> end
+    %ArithmeticError{}
+
+这里，我们挽救进程并打印错误结构而不用退出子进程。
+
+### try-catch 块
+try-catch块和try-rescue块类似，但有些细微差别，try-rescue块可以挽救错误并返回到正常流程，然而try-catch块通常执行一些额外的
+代码而不是退出 。也就是 进程没有被保存，但在进程退出前一些额外的代码被执行了。
+ 
+尽管有些许差别，try-catch块仍旧使用模式匹配的形式来操作。我们可以捕获 :exit, :throw 或者全部捕获。
+例子：
+>
+    iex(4)> try do
+    ...(4)> throw :fails
+    ...(4)> catch
+    ...(4)> :throw, value ->IO.puts :stderr, "Failure in above code: #{inspect value}"
+    ...(4)> end
+    :ok
+    Failure in above code: :fails
+    
+相似地 我们可以捕获并退出：
+>
+    iex(5)> try do
+    ...(5)> exit :oops
+    ...(5)> catch
+    ...(5)> :exit, code -> IO.puts :stderr ,"Exited: #{inspect code}"
+    ...(5)> end
+    Exited: :oops
+    :ok
+    
+我们也可以使用Erlang的 error/1 函数 配合Elixir的try-catch:
+
+>   
+   iex(6)> try do
+   ...(6)> :erlang.error "More oops"
+   ...(6)> catch
+   ...(6)> error -> IO.puts :stderr, "Error received: #{inspect error}"
+   ...(6)> end
+   ** (ErlangError) erlang error: "More oops"
+
+在以上所有的情况，子进程都被关闭。我们没有看到这个在交互进会话中 因为失败的进程被立即重启了 。注意如果一个错误被抛出，
+交互会话使用相同的数字重启
+
+同其他语言类似，使用try-catch块，如果没有关联的catch对应特定的错误，raise会向上传递广播的。
+>   
+    iex(6)> try do
+    ...(6)> throw "oops"
+    ...(6)> catch
+    ...(6)> :exit , code -> IO.puts :stderr , "Exit received #{inspect code}"
+    ...(6)> end
+    ** (throw) "oops"
+
+因为在catch匹配中没有模式 对应 :throw ,value or _ , 抛出的值会传递catch到的 并被supervising进程捕获（顶级进程）。
+
+## 使用异常
+
+有些情况真正地需要出发异常；不然 我们应该允许错误传播到控制进程，比如，打开一个期待的应是可用的文件失败应该是一个异常
+在这种情况下 应触发它。
+
+## 打开文件
+首先，让我们考虑如何执行文件操作 这些操作的结果是什么。
+
+Elixir提供了File模块 可用来打开，读， 写 和关闭文件。
+
+假设我们有一个文件在我们当前工作目录中:hello.txt 有下面的内容：
+>   Hello, World!
+
+我们可用打开并读取此文件 ：
+>
+    Interactive Elixir (1.1.1) - press Ctrl+C to exit (type h() ENTER for help)
+    iex(1)> {:ok, hello} = File.open "hello.txt"
+    {:ok, #PID<0.59.0>}
+    iex(2)> IO.read(hello, :all)
+    "Hello, World!"
+    iex(3)> :ok = File.close hello
+    :ok
+
+或者使用便捷方便函数 file.read/1 完成上吗所有的步骤。
+>   iex(4)> {:ok, contents } = File.read "hello.txt"
+    {:ok, "Hello, World!"}
+    
+所有的这些块都运行我们打开，读取整个文件内容，并关闭文件。喜欢选择哪个只是灵活性和控制问题。用IO.read/2 比之File.read/1
+我们有更多的控制对文件如何读取 .然而 第一个列子需要更多的步骤，然而File.read/1 为我们做了这些步骤的抽象。
+
+现在，当打开一个文件失败时会发生什么？或者，当打开一个不存在文件时发生什么？
+>
+    iex(6)> File.open "fake_file_path.txt"
+    {:error, :enoent}
+    
+我们得到了一个元祖返回， 第一个元素是:error  第二个是:enoent .
+很清楚 这不是一个好结果，如我们期待的 ;enoent 意味三个事情中的一个
+- 路径没找到 
+- 文件找不到
+- 没有更多文件
+
+为了找这些符号，我们偶尔需要查看Erlang的文档。
+
+既然我们知道打开文件的基础，我们要看看我们如何使用结果来做不同事情。
+
+我们可以使用case 表达式根据文件读取操作的成功或者失败：
+>
+    iex(7)> file_name = "fake_file_path.txt"
+    "fake_file_path.txt"
+    iex(8)> case File.read file_name do
+    ...(8)> {:ok, contents} -> IO.puts contents
+    ...(8)> {:error, reason} ->IO.puts :stderr, "Couldn't open file #{file_name} because: #{reason}"
+    ...(8)> end
+    Couldn't open file fake_file_path.txt because: enoent
+    :ok
+    
+这里我们读取一个不存在的文件，如果文件存在，{:ok, contents} 元祖会被匹配， 并打印内容到:stdout(IO.puts/1 的默认设备)。
+因为文件不存在，我们匹配到元祖：{:error, reason}, 结果是打印一个错误消息到 :stderr并提供原因。
+
+【注意，这是个丑陋的消息对用户来说 除非用户使用了Erlang / Elixir  用户消息应该比这个更友好】
+
+然而， 如果我们假设文件总是可用，我们可以重写前面的代码 使用raise/1 调用：
+>
+    iex(9)> case File.open "config_file" do
+    ...(9)> {:ok, config_file} -> parse_config(config_file)
+    ...(9)> {:error, reason} ->raise "Failed to open config file: #{reason}"
+    ...(9)> end
+    ** (CompileError) iex:10: undefined function parse_config/1
+        (stdlib) lists.erl:1353: :lists.mapfoldl/3
+        (stdlib) lists.erl:1353: :lists.mapfoldl/3
+    iex(9)>
+
+因为没定义parse_config 函数 所以报错了 那个只是占位而已 ，可以用空操作替换掉 看看下面的执行流    
+
+此段代码和前面基本类似只是打开文件失败时 触发一个异常 附带上原因。
+
+另一个选择时允许Elixir来为我们触发异常，，那就是 触发一个匹配错误：
+>
+    iex(9)> {:ok, config_file} = File.open("config_file")
+    ** (MatchError) no match of right hand side value: {:error, :enoent}
+
+尽管，这种方法并不总是最简单的debug方法。它经常是短期够用的。 但有个更好的选择 -- File.open!. 末尾的 **叹号** 是一个Elixir
+的惯例 它显示出在错误时函数会触发一个异常 而不是返回一个元祖：{:error, reason }:
+>
+    iex(9)> config_file = File.open!("config_file")
+    ** (File.Error) could not open config_file: no such file or directory
+        (elixir) lib/file.ex:1046: File.open!/2
+    
+这样 我们不用做任何特殊时期 并得到一个很好的错误消息。
+
+## 异常补救 Exceptions rescap
+ 
+尽管异常和使用try-catch 和使用 try-rescue可以用来做一些代码分支 ，这些不是严格的代码分支结构 。这里，实际上，一些关于
+cathing和handling异常的章节应该被忽略 。Elixir的哲学是字面量地对待错误 。更经常地 在Elixir标准库中的函数 和你写的函数应该
+返回一个元祖 其第一个元素是 :ok 或者 :error  和其值或者错误原因 分别地 这取决于你，和你系统的假设 决定一个:error 是不是
+真正的异常，除了这个 ，我们可以广泛地使用模式匹配 或者 ！ 函数来触发 并且广播一个错误给控制进程。
+
+【注  这种方式 被广泛地采用在其他语言中  在golang中 称之为 ok-pattern   ， 在node-js中 异步编程 也是这种函数风格 
+function x(): {:ok|:error, return-value|error-reason , callback}】
+    
+    
+## Determinism 决定
+
+在这种分支表达式返回一个值的结果 有很多可强调 ，Elixir 函数式的天性结果
+  
+JVM java的分支表达式不是内在可决定的 。他们可能从不返回一个值或者退出。
+更深地，if then else 字句在java中 也不是自然地返回一个结果，而是 这些表达式 很字面地 ，分叉执行路径。
+然而，JVM做了一些事情用于提升性能 在这些执行路径附近 -- 他可能会假设某条路径是唯一的执行路径。
+  
+JVM中的执行路径  JVM通过展开指令并采用一个捷径在表达式（支分代码）周围  。然而这种优化不是免费的，如果路径的假设不正确，
+JVM必须回溯其假设然后 未优化地 继续前行 。 这被称为 **branch miss**（prediction）这经常是很贵的。
+
+ERTS（Erlang Runtime System ）内在不用这种优化 。换之，他牺牲了这种速度 为了确保安全通过类型系统和运行时。ERTS永远不会
+branch miss ；就是不能。
+【这不是说ERTS 不会有一个更好的性能， HiPE（High Performance Erlang 高性能Erlang）扩展 会提前编译特定模块和函数到本地代码】
+
+为了让ERTS永远不会branch miss，要执行的代码不得不必须是正确的并且是可决定的 。
+

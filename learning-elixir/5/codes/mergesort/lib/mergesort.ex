@@ -3,10 +3,10 @@ defmodule Mergesort do
     def sort(l) do
        cond do
             l == [] -> []
-            length(1) <= 1 -> 1
+            length(l) <= 1  -> l
             true ->
                 middle = div(length(l), 2)
-                left = Enum.slice(1, 0, middle)
+                left = Enum.slice(l, 0, middle)
                 right = Enum.slice(l, middle, length(l) - length(left))
                 left = sort(left)
                 right = sort(right)

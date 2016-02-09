@@ -716,9 +716,120 @@ mix已创建了test目录，并创建了测试骨架（为主模块）
     
 ## 更多关于模块的
 
-模块是我们构建块的封装单元，他们针对函数block来说是顶级block。但偶尔 ，我们可能想文档化我们的代码    
+模块是我们构建块的封装单元，他们针对函数block来说是顶级block。但偶尔 ，我们想获取我们模块的数据和元数据在我们的构建块上。
+我们可能想文档化我们的代码，想跟随我们的人可以读到这些注释和文档，更好的 希望有一个好用的工具来构建我们代码的富文档
 
+或者不是文档化 我们想要通过特定的属性标记（tag）我们的模块和函数。
 
+为了支持这些目标 ，Elixir给了我们这样的能力来获取模块属性，可以作为开发者或者用户，或者用于VM。相似地 我们可以像常量来使用
+属性。
+
+在Elixir中属性被定义为： @name 的形式。比如添加@vsn属性来标注一个模块：
+~~~
+    
+    defmodule MyModule do
+        @vsn 1
+    end
+~~~
+来看看两个最常用的属性  --  @moduledoc 和 @doc
+
+我们可以定义一个Math模块 使用@moduledoc 和@doc 属性：
+~~~
+        
+    defmodule Math do
+       @moduledoc """
+              Provides math-related functions
+              """
+    
+        @doc"""
+        Calculate factorial of a number .
+    
+        ## Example
+    
+            iex> Math.factorial(5)
+            120
+        """
+        def factorial(n), do: do_factorial(n)
+    
+        defp do_factorial(0), do: 1
+        defp do_factorial(n), do: n * do_factorial(n-1)
+    
+        @doc """
+        Compute the binomial coefficient of `n` 和 `k`
+    
+        ## Example
+            iex> Math.binomial(4, 2)
+            6
+        """
+        def binomial(n,k), do: div(factorial(n), factorial(k)* factorial(n-k))
+    end
+~~~
+保存这个文件并编译
+>   elixir math.ex
+
+都好着，也没看到任何输出和退出码
+
+接下来打开iex 获取我们的Math模块的文档
+~~~
+
+    F:\Elixir-workspace\elixer-coder\learning-elixir\3\codes>iex
+    Eshell V7.0  (abort with ^G)
+    Interactive Elixir (1.1.1) - press Ctrl+C to exit (type h() ENTER for help)
+    iex(1)> h Math
+    Could not load module Math, got: nofile
+    iex(2)> c "math.ex"
+    [Math]
+    iex(3)> h Math
+    * Math
+    
+    Provides math-related functions
+    
+    iex(4)> h Math.factorial
+    * def factorial(n)
+    
+    Calculate factorial of a number .
+    
+    ## Example
+    
+        iex> Math.factorial(5)
+        120
+
+~~~
+
+就是 我们可以使用 h/1 函数在iex中在我们的模块或者函数上拉取文档
+
+## Testing with comments
+@moduledoc和@doc属性 另一个比较酷的特性 所谓的 **doctesting**
+意即 在我们评论中的行 看起来像 iex 会话的可以被用于测试 
+
+回到Flatten项目
+为我们的函数添加@doc 评论
+添加的评论看起来跟在iex 会话中 手动测试函数 相似
+~~~
+
+    defmodule Flatten do
+        # 注意模式匹配的顺序哟！
+    
+        @doc """
+        Flatten an arbitrarily nested lists
+    
+        ## Examples
+    
+            iex> Flatten.flatten [[1,2] ,[3] ,[4,5]]
+            [1,2,3,4,5]
+            iex> Flatten.flatten [1,2,3,4,5]
+            [1,2,3,4,5]
+        """
+        def flatten([]), do: []
+        def flatten([h|t]) when is_list(h), do: h ++ flatten(t)
+        def flatten([h|t]), do: [h] ++ flatten(t)
+    end
+
+~~~
+接下来 打开flatten_test.exs 文件 在顶部添加
+> doctest(Flatten)
+
+在@doc属性中的测试会被合并到一个独立的测试 当使用这种方式测试时。
 
 
 
