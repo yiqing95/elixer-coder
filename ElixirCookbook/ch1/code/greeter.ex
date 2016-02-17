@@ -1,6 +1,6 @@
-defmodule Greater do
+defmodule Greeter do
 
-  def great(name \\ "you") do
+  def greet(name \\ "you") do
     "Hello #{name} !"
   end
 end
