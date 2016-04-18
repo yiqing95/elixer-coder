@@ -598,4 +598,52 @@ one for one, one for all, rest for one 和简单的 one for one。
 的进程不应该重启他们。第三个最后的选项用于resarts的是 :transient 意思是 supervisor只会启动非正常退出的进程 。就是 如果进程
 关闭原因不是:normal, :shutdown,或者 {:shutdown, term} supervisor就会重启进程。
 
+在Elixir中创建supervisor 和创建其他OTP行为很像 ，你需要定义一个模块 它使用 Supervisor行为 和一些函数 并启动它 。
+
+让我们创建一个简单的supervisor 为我们的KV进程
+~~~
+    
+    defmodule KV.Supervisor do
+        use Supervisor
+        
+        def start_link do
+            Supervisor.start_link(__MODULE__, :ok)
+        end
+        
+        def init(:ok) do
+            children = [worker(KV, [])]
+            
+            supervise(children, strategy: :one_for_one)
+        end
+    end
+~~~
+同平常一样 ，有个start_link 函数 它使用Supervisor.start_link 来执行同步的启动 并链接supervisor进程到当前进程。
+init/1 函数是supervising 配置设定的地方 。我们定义了孩子或者被监控的进程列表 ，这些可以是工作者进程 或者其他的supervisors。
+
+【有另一个帮助函数，supervisor/2 同 worker/2 类似，区别是supervisors有一个无限超时的值用于 关闭 ，而workers默认是5秒的超
+时 】
+
+## Fail fast(er)  快速失败
+
+为什么我们需要进程supervision？ 使用supervision而不是异常处理的好处是什么？
+
+异常处理倾向保持进程或者线程存活 通过捕获错误并让其传递 通过使用一系列的 try-catch 块 。这经常不能触发一个错误到合适的级别
+更糟的是 它可能让进程或者上下文处于一个很坏的状态，或许掩盖了更脆弱 更深远的问题。
+
+快速失败并使用进程supervision ，我们完全可以避免错误状态问题 ： 如果进程由于某种原因失败 ，重启它 。添加一个好的logging
+围绕supervisors和workers ，错误传递到正确的部分可以更容易 。
+
+## Designing with supervisors （伴随supervisors的设计）
+围绕进程supervision的感觉并不必太复杂。复杂性经常在于如何设计进程来使用supervisors ，supervision树的定义顺序是什么 。
+特定进程应该是什么级别的树 。这不是一个简单问题，但也并不是不可能 。
+
+有一些线索和信号可用于指导设计。看看进程的依赖，是否一个进程依赖另一个？在进程树中后者应该比前者更高，是否一个进程依赖
+整个进程树？ 子树应该定义在前面 ，是否两个进程相互依赖？试着隔离他们到其自己的supervisor树中 并使用  :one_for_all
+
+## OTP 进程初始化的假设
+
+设计使用supervisor的应用，当启动OTP进程时 知道或者明确假设是很有帮助的。如果一个GenServer 进程在初始化时对一个database
+做了一个调用，假设就是当进程启动时这个database 总是存活的，如果不是进程就不能启动。
+然而，如果database被期待的是并非总是可用 定义的OTP进程会失败的假设 可能会导致整个应用失败 因为重启数可能超了 。
+因此 在OTP进程的初始化和启动时什么是可用的假设必须是知道的 先验条件 **a priori**。
 

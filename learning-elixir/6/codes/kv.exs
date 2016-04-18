@@ -1,6 +1,11 @@
 defmodule KV  do
     def start_link do
         spawn_link(fn -> loop(%{}) end)
+
+    end
+
+    def test do
+      "hello"
     end
 
     defp loop(map) do
